@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Form Örneği</title>
+  <script src="js/jquery-1.12.0.js"></script>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- Milligram CSS minified -->
+  <link rel="stylesheet" href="css/milligram.css">
+  <link rel="stylesheet" href="css/app.css">
+
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="column">
+        <h5>Üyelik Formu</h5>
+        <form id="registration-form" novalidate>
+          <fieldset>
+            <label for="email">E-Posta</label>
+            <input type="email" class="required" placeholder="E-Posta Adresi" id="email" required>
+            <label for="username">Kullanıcı Adı</label>
+            <input type="text" placeholder="Kullanıcı Adı" id="username" required>
+            <label for="password-1">Parola</label>
+            <input type="password" placeholder="Parola" id="password-1" required>
+            <input type="password" placeholder="Parola Tekrar" id="password-2" required>
+            <label for="phone">Telefon Numarası</label>
+            <input type="number" placeholder="Telefon Numarası" id="phone">
+            <hr/>
+            <input class="button-primary float-right" type="submit" value="Gönder">
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+  
+  function addWarning(element, message, messageId) {
+    if (!element.hasClass('warning')) {
+      element.addClass('warning');
+    }
+    if ($('#' + messageId).length == 0) {
+      element.after('<div class="warning" id="' + messageId + '">' + message + '</div>');
+    }
+  }
+
+  function removeWarning(element, messageId) {
+    if (element.hasClass('warning')) {
+      element.removeClass('warning');
+    }
+    $('#' + messageId).remove();
+  }
+
+  // HTML sayfasının indirildiğinden emin olalım.
+  $(document).ready(function() {
+
+
+    // Veri girişi alanından çıkıldığını tespit edelim
+    $('input').focusout(function() {
+
+      // Eğer eleman required özelliğine sahip ise boş olmamalıdır.
+      var fieldNotEmptyMessage = " alanı boş olamaz";
+
+      // Alanın gereli olup olmadığını kontrol eden değişken
+      var inputRequired = $(this).prop('required');
+
+      // Placeholder değerine alanların Türkçe isimlerini yazdığımız için, bu değeri mesajlarda da kullanabiliriz.
+      var inputPlaceHolder = $(this).attr('placeholder');
+
+      // Eğer input gerekliyse ve boş ise uyarı ekleyelim
+      if (inputRequired && $(this).val() == "") {
+        // buraya dikkat, eklediğimiz uyarı etiketlerini messageId parametresine göre sileceğimiz için bu kısmı ekledik
+        addWarning($(this), inputPlaceHolder + fieldNotEmptyMessage, $(this).attr('id') + '-not-empty'); 
+      }
+      if (inputRequired && $(this).val() != "") {
+        removeWarning($(this), $(this).attr('id') + '-not-empty');
+      }
+
+    });
+    
+    // Keyup metodu herhangi bir alanda klavyenin tuşuna basıldığını algılar.
+    // Burada biz her tuşa basıldığında veri girişinin uzunluğunu kontrol edeceğiz.
+    // Eğer yazarken doğrulama sağlanırsa uyarı kendiliğinden kaybolacak.
+    $('#username, #phone').keyup(function() {
+      // Telefon numarası en az 7 haneden, Kullanıcı adı en az 8 haneden oluşmalıdır.
+      var phoneNumberLessThankSevenCharsMessage = "Telefon Numarası en 7 haneden oluşmalıdır.";
+      var usernameLessThankEightCharsMessage = "Kullanıcı adı en 8 haneden oluşmalıdır.";
+      var inputLessThanSevenChars = $(this).val().length < 7;
+      var inputLessThanEightChars = $(this).val().length < 8;
+
+      if ($(this).attr('id') == 'username' && inputLessThanEightChars) {
+        addWarning($(this), usernameLessThankEightCharsMessage, $(this).attr('id') + '-less-than-eight');
+      } else {
+        removeWarning($(this), $(this).attr('id') + '-less-than-eight');
+      }
+
+      if ($(this).attr('id') == 'phone' && inputLessThanSevenChars) {
+        addWarning($(this), phoneNumberLessThankSevenCharsMessage, $(this).attr('id') + '-less-than-seven');
+      } else {
+        removeWarning($(this), $(this).attr('id') + '-less-than-seven');
+      }
+    });
+    // Yine aynı şekilde burada da her tuşa basıldığında iki parola alanının aynı olup olmadığını kontrol edeceğiz
+    $('#password-1, #password2').keyup(function() {
+
+      var passwordNotEqualMessage = "Parola alanları aynı olmalıdır";
+
+      // Eleman password1 id'sine sahipse password2 ile eşit olmalıdır. Ya da tam tersi.
+      if ($('#password-1').val() != $('#password-2').val()) {
+        addWarning($('#password-2'), passwordNotEqualMessage, 'password-2-not-equal');
+      } else {
+        removeWarning($('#password-2'), 'password-2-not-equal');
+      }
+    });
+
+  });
+
+  </script>
+</body>
+</html>
