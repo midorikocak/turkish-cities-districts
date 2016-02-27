@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Form Örneği</title>
+  <script src="js/jquery-1.12.0.js"></script>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- Milligram CSS minified -->
+  <link rel="stylesheet" href="css/milligram.css">
+  <link rel="stylesheet" href="css/app.css">
+
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="column">
+        <h5>Şehir Seçme</h5>
+        <form id="city-form" novalidate>
+          <fieldset>
+            <label for="city">İl</label>
+            <select id="city">
+              <option>Lütfen İl Seçiniz</option>
+            </select>
+            <label for="district">İlçe</label>
+            <select id="district">
+              <option>Lütfen İlçe Seçiniz</option>
+            </select>
+            <input class="button-primary float-right" type="submit" value="Gönder">
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+      // HTML sayfasının indirildiğinden emin olalım.
+      $(document).ready(function () {
+
+          $.get("cities.php", function (data, status) {
+              if (status == 'success') {
+                  $.each(data, function (id, name) {
+                      $('#city').append('<option value="' + id + '">' + name + '</option>');
+                  });
+
+                  $("#city").change(function () {
+                      var city = $(this).find('option:selected').attr('value');
+                      $.post("cities.php", {
+                                  id: city
+                              },
+                              function (data, status) {
+                                  if (status == 'success') {
+                                      $('#district').empty();
+                                      var districts = data.districts;
+                                      $.each(districts, function (id, district) {
+                                          //display the key and value pair
+                                          $('#district').append('<option value="' + district.id + '">' + district.name + '</option>');
+                                      });
+                                  }
+                              });
+                  });
+              }
+          });
+      });
+  </script>
+</body>
+</html>

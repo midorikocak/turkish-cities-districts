@@ -1,0 +1,26 @@
+{ "name": "midorikocak/turkish-cities-districts",
+    "description": "The city filter finds districts of cities from a json file and php API returns the cities list or city district list.'",
+    "license": "MIT",
+    "keywords": ["city", "district", "ajax", "json", "coding", "code"],
+    "authors": [
+        {
+            "name": "Midori Kocak",
+            "email": "mtkocak@gmail.com"
+        }
+    ],
+	"require-dev": {
+		"phpunit/phpunit": "5.1.*"
+	},
+    "config": {
+        "bin-dir": "bin/",
+        "preferred-install": "dist"
+    },
+    "autoload": {
+		"psr-4": {
+			"MidoriKocak\\": "src/"
+		},
+		"psr-0": {
+		"MidoriKocakTest\\": "tests/"
+	}
+    }
+}
