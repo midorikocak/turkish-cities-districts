@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>This Month</title>
+  <script src="js/jquery-1.12.0.js"></script>
+  <script src="js/jquery.calendar.js"></script>
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+
+  <!-- Milligram CSS minified -->
+  <link rel="stylesheet" href="css/milligram.css">
+  <link rel="stylesheet" href="css/calendar.css">
+
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="column">
+        <h5>Add To Month</h5>
+        <form id="month-form">
+          <fieldset>
+            <label for="date">When?</label>
+            <input type="date" id="date" required>
+            <label for="title">Title</label>
+            <input type="text" placeholder="Title" id="title" required>
+            <textarea id='content'>Content</textarea>
+            <input class="button-primary float-right" type="submit">
+          </fieldset>
+        </form>
+      </div>
+      <div class="column column-67" id="calendar">
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+  var date = new Date();
+  var month = date.getMonth()+1;
+  var year = date.getFullYear();
+  var lastDay = new Date(year, month, 0).getDate();
+  $(document).ready(function(){
+    
+    $( "#month-form" ).submit(function( event ) {
+      event.preventDefault();
+      
+      var dateValue = $('#date').val().split('-');
+      var id = '#'+parseInt(dateValue[2],10)+'-'+parseInt(dateValue[1],10)+'-'+dateValue[0];
+      $(id).append('<div data-content="'+$('#content').val()+'" class="todo">'+$('#title').val()+'</div>');
+      
+      $('.todo').click(function(){
+        alert($(this).data('content'));
+      });
+      
+    });
+    
+    $('#calendar').calendar();
+    $('#date').attr('min', '1-'+month+'-'+year);
+    $('#date').attr('max', lastDay+'-'+month+'-'+year);
+  });
+  </script>
+</body>
+</html>

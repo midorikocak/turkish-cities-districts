@@ -1,0 +1,40 @@
+.container {
+  padding: 4rem 2rem;
+}
+
+.calendar > thead > tr:first-child > th {
+  text-transform: uppercase;
+  font-weight: lighter;
+  height: 5vh;
+}
+
+.calendar th, td {
+  width: 14%;
+  text-align:left;
+  height: 15vh;
+  border:none;
+}
+
+.calendar td {
+  
+  padding-top:30px;
+  border: 1px solid silver;
+  position: relative;
+  vertical-align: top;
+}
+
+.day{
+  position:absolute;
+  top:5px;
+  left:10px;
+}
+
+.todo {
+  display:block;
+  font-size:14px;
+  color:rgb(0, 153, 255);
+}
+
+.todo::before { 
+  content: "- ";
+}
